@@ -4,9 +4,11 @@ export const POST = async (req: NextRequest) => {
   try {
     const { email, password } = await req.json();
 
-    console.log(email, password);
+    // ... Check if user exist in database
 
-    console.log("Login");
+    // ... Check if password match
+
+    // ... Create JWT token
 
     return NextResponse.json({ email: email, password: password });
   } catch (error) {
