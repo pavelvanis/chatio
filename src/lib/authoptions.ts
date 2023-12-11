@@ -16,11 +16,16 @@ const authOptions: NextAuthOptions = {
           password: string;
         };
 
-        const login = await fetch("http://localhost:3000/api/auth/login", {
+        console.log("Login", email, password);
+
+        const login = await fetch(`http://localhost:3000/api/auth/login`, {
           method: "POST",
-          body: JSON.stringify({ email: email, password: password }),
+          body: JSON.stringify({ email, password }),
         });
+
         const res = await login.json();
+
+        console.log(res);
 
         if (login.ok) {
           return res;
