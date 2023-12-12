@@ -20,7 +20,9 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ message: "Password not match" }, { status: 401 });
     }
 
+    // 
     // ... Create JWT token
+    // 
 
     return NextResponse.json({ email: email, password: password });
   } catch (error) {
