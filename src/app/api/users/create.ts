@@ -1,4 +1,5 @@
 import connectDB from "@/lib/mongo";
+import { errorHandler } from "@/lib/services/apiErrorHandler";
 import UserModel, { IUser } from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -27,14 +28,13 @@ export const createUser = async (req: NextRequest) => {
 
     // Create user ..
     const createUser = await UserModel.create(body);
-
-    const user = await UserModel.findById(createUser.id);
     // ..
 
-    // Return user
+    // Return user ..
     return NextResponse.json(createUser, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: error }, { status: 400 });
+    // Return error ..
+    return errorHandler(error);
   }
 };
