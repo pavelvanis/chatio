@@ -1,11 +1,23 @@
-import React from 'react'
+"use client";
+import { signIn } from "next-auth/react";
 
-type Props = {}
+export default function LoginPage() {
+  const user = { email: "a@a.aa", password: "Heslo1!8" };
 
-const LoginPage = (props: Props) => {
+  const handler = async () => {
+    try {
+      const login = await signIn("credentials", {
+        ...user,
+        redirect: false,
+      });
+      console.log(login);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
-    <div>LoginPage</div>
-  )
+    <>
+      <button onClick={handler}>login</button>
+    </>
+  );
 }
-
-export default LoginPage
