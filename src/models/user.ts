@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import { User } from "lucide-react";
 import mongoose, { Model, models } from "mongoose";
 
 // Interface of user
@@ -15,7 +14,7 @@ interface Methods {
 }
 
 // Create user schema
-const UserSchema = new mongoose.Schema<IUser, Methods>({
+const UserSchema = new mongoose.Schema<IUser, {}, Methods>({
   name: {
     type: String,
     required: [true, "Add name"],
@@ -31,12 +30,13 @@ const UserSchema = new mongoose.Schema<IUser, Methods>({
     required: [true, "Add password"],
     minlength: [6, "Password must be at least 6 characters"],
     maxlength: [20, "Password can not be more than 20 characters"],
-    select: false,
+    // select: false,
   },
 });
 
 // Method for comparing passwords
 UserSchema.methods.comparePassword = async function (password: string) {
+  console.log(password, this.password);
   return await bcrypt.compare(password, this.password);
 };
 
