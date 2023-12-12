@@ -14,42 +14,66 @@ interface Methods {
 }
 
 // Create user schema
-const UserSchema = new mongoose.Schema<IUser, {}, Methods>({
-  name: {
-    type: String,
-    required: [true, "Add name"],
+const UserSchema = new mongoose.Schema<IUser, {}, Methods>(
+  {
+    name: {
+      type: String,
+      required: [true, "Add name"],
+    },
+    email: {
+      type: String,
+      required: [true, "Add email"],
+      unique: true,
+      match: [
+        /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
+        "Please add a valid email",
+      ],
+    },
+    password: {
+      type: String,
+      required: [true, "Add password"],
+      minlength: [6, "Password must be at least 6 characters"],
+      maxlength: [20, "Password can not be more than 20 characters"],
+      // select: false,
+    },
   },
-  email: {
-    type: String,
-    required: [true, "Add email"],
-    unique: true,
-    match: [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, "Please add a valid email"],
-  },
-  password: {
-    type: String,
-    required: [true, "Add password"],
-    minlength: [6, "Password must be at least 6 characters"],
-    maxlength: [20, "Password can not be more than 20 characters"],
-    // select: false,
-  },
+  {
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        delete ret.password;
+        delete ret.__v;
+        delete ret._id;
+        return ret;
+      },
+    },
+    toObject: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        delete ret.password;
+        delete ret.__v;
+        delete ret._id;
+        return ret;
+      },
+    },
+  }
+);
+
+UserSchema.virtual("id").get(function () {
+  return this._id.toHexString();
 });
 
 // Method for comparing passwords
 UserSchema.methods.comparePassword = async function (password: string) {
-  console.log(password, this.password);
   return await bcrypt.compare(password, this.password);
 };
 
 // Hash password before saving
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-  //   try {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
-  //   } catch (error) {
-  // // next(new Error("Error in mongoose!"));
-  //   }
 });
 
 // If model exists, use it, else create it
