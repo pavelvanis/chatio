@@ -81,20 +81,35 @@ ServerSchema.pre("save", async function (next) {
   next();
 });
 
+// Check if users exist before saving
 ServerSchema.pre("save", async function (next) {
   const existingMembers = await UserModel.find({ _id: { $in: this.members } });
   const existingAdmins = await UserModel.find({ _id: { $in: this.admins } });
+  const existingOwner = await UserModel.findOne({ _id: this.owner });
 
   if (
     existingMembers.length !== this.members.length ||
-    existingAdmins.length !== this.admins.length
+    existingAdmins.length !== this.admins.length ||
+    !existingOwner
   ) {
-    const error = new mongoose.Error("One or more users do not exist");
+    const error = new mongoose.Error.ValidationError();
 
-    // Přidání dalších vlastností chyby, pokud je to potřeba
     error.message = "One or more users do not exist";
 
-    console.log("MESSAGE   " + error.message);
+    return next(error);
+  }
+
+  next();
+});
+
+// Check if server with same name exists before saving
+ServerSchema.pre("save", async function (next) {
+  const existingServers = await ServerModel.find({ name: this.name });
+
+  if (existingServers.length > 0) {
+    const error = new mongoose.Error.ValidationError();
+
+    error.message = "Server with this name already exists";
 
     return next(error);
   }
