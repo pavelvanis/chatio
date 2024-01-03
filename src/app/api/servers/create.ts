@@ -13,19 +13,6 @@ export const create = async (req: NextRequest) => {
 
     await connectDB();
 
-    // Check if user already exists ..
-    const serverExist = await ServerModel.findOne(
-      { name: body.name },
-      { __v: 0 }
-    );
-    if (serverExist) {
-      return NextResponse.json(
-        { message: "This server name is already using." },
-        { status: 200 }
-      );
-    }
-    // ..
-
     // Create user ..
     const createServer = await ServerModel.create(body);
     // ..
