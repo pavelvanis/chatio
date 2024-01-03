@@ -1,4 +1,6 @@
+import connectDB from "@/lib/mongo";
 import { errorHandler } from "@/lib/services/apiErrorHandler";
+import ServerModel, { IServer } from "@/models/server";
 import UserModel from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,25 +12,27 @@ type Props = {
 
 export const update = async (req: NextRequest, { params: { id } }: Props) => {
   try {
-    const body = await req.json();
+    const body = await req.json() as IServer;
+
+    await connectDB();
+
     //
     // Check JWT
     //
 
-    // Get All Users ..
-    const user = await UserModel.findById(id);
-    if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    // Check if server exist ..
+    const server = await ServerModel.findById(id);
+    if (!server) {
+      return NextResponse.json({ message: "Server not found" }, { status: 404 });
     }
     // ..
 
-    const updatedUser = await UserModel.findByIdAndUpdate(id, body, {
-      //   projection: { password: 0, __v: 0 },
+    const updatedServer = await ServerModel.findByIdAndUpdate(id, body, {
       new: true,
     });
 
-    // Return Users
-    return NextResponse.json(updatedUser);
+    // Return updated server
+    return NextResponse.json(updatedServer);
   } catch (error) {
     return errorHandler(error);
   }
