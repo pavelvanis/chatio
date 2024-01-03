@@ -13,7 +13,9 @@ export interface IServer {
 }
 
 // Interface of Server methods
-interface Methods {}
+interface Methods {
+  checkUsersExistence: () => Promise<void>;
+}
 
 // Create Server schema
 const ServerSchema = new mongoose.Schema<IServer, {}, Methods>(
@@ -81,27 +83,6 @@ ServerSchema.pre("save", async function (next) {
   next();
 });
 
-// Check if users exist before saving
-ServerSchema.pre("save", async function (next) {
-  const existingMembers = await UserModel.find({ _id: { $in: this.members } });
-  const existingAdmins = await UserModel.find({ _id: { $in: this.admins } });
-  const existingOwner = await UserModel.findOne({ _id: this.owner });
-
-  if (
-    existingMembers.length !== this.members.length ||
-    existingAdmins.length !== this.admins.length ||
-    !existingOwner
-  ) {
-    const error = new mongoose.Error.ValidationError();
-
-    error.message = "One or more users do not exist";
-
-    return next(error);
-  }
-
-  next();
-});
-
 // Check if server with same name exists before saving
 ServerSchema.pre("save", async function (next) {
   const existingServers = await ServerModel.find({ name: this.name });
@@ -116,6 +97,36 @@ ServerSchema.pre("save", async function (next) {
 
   next();
 });
+
+// Check if users exist before saving
+ServerSchema.pre("save", async function (next) {
+  await this.checkUsersExistence();
+  next();
+});
+
+ServerSchema.pre("findOneAndUpdate", async function (next) {
+  const docToUpdate = await this.model.findOne(this.getQuery());
+  await docToUpdate.checkUsersExistence();
+  next();
+});
+
+ServerSchema.methods.checkUsersExistence = async function () {
+  const existingMembers = await UserModel.find({ _id: { $in: this.members } });
+  const existingAdmins = await UserModel.find({ _id: { $in: this.admins } });
+  const existingOwner = await UserModel.findOne({ _id: this.owner });
+
+  if (
+    existingMembers.length !== this.members.length ||
+    existingAdmins.length !== this.admins.length ||
+    !existingOwner
+  ) {
+    const error = new mongoose.Error.ValidationError();
+
+    error.message = "One or more users do not exist";
+
+    throw error;
+  }
+};
 
 // If model exists, use it, else create it
 const ServerModel = models.Server || mongoose.model("Server", ServerSchema);
