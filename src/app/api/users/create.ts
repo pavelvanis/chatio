@@ -3,7 +3,7 @@ import { errorHandler } from "@/lib/services/apiErrorHandler";
 import UserModel, { IUser } from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
 
-export const createUser = async (req: NextRequest) => {
+export const create = async (req: NextRequest) => {
   try {
     const body = (await req.json()) as IUser;
 

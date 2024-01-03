@@ -1,3 +1,4 @@
-import { createUser } from "./create";
+import { create } from "./create";
+import { getAll } from "./getAll";
 
-export { createUser as POST };
+export { create as POST, getAll as GET };
