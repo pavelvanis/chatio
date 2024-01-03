@@ -8,12 +8,12 @@ export interface IUser {
   password: string;
 }
 
-// Interface of user methods
+// Interface of User methods
 interface Methods {
   comparePassword: (password: string) => Promise<boolean>;
 }
 
-// Create user schema
+// Create User schema
 const UserSchema = new mongoose.Schema<IUser, {}, Methods>(
   {
     name: {
