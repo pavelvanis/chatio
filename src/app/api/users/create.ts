@@ -21,7 +21,7 @@ export const create = async (req: NextRequest) => {
     if (userExist) {
       return NextResponse.json(
         { message: "This email already exist" },
-        { status: 200 }
+        { status: 400 }
       );
     }
     // ..
@@ -29,6 +29,8 @@ export const create = async (req: NextRequest) => {
     // Create user ..
     const createUser = await UserModel.create(body);
     // ..
+
+    console.log("User was created successfully");
 
     // Return user ..
     return NextResponse.json(createUser, { status: 200 });
