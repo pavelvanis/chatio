@@ -5,6 +5,7 @@ import mongoose, { Model, models } from "mongoose";
 export interface IUser {
   name: string;
   email: string;
+  image: string;
   password: string;
 }
 
@@ -19,6 +20,8 @@ const UserSchema = new mongoose.Schema<IUser, {}, Methods>(
     name: {
       type: String,
       required: [true, "Add name"],
+      minlength: [2, "Name must be at least 2 characters"],
+      maxlength: [20, "Name can not be more than 20 characters"],
     },
     email: {
       type: String,
@@ -28,6 +31,9 @@ const UserSchema = new mongoose.Schema<IUser, {}, Methods>(
         /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
         "Please add a valid email",
       ],
+    },
+    image: {
+      type: String,
     },
     password: {
       type: String,

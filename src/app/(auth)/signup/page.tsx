@@ -1,11 +1,10 @@
-import React from 'react'
+import LoginForm from "@/components/auth/login-form";
+import SignupForm from "@/components/auth/signup-form";
 
-type Props = {}
-
-const LoginPage = (props: Props) => {
+export default function LoginPage() {
   return (
-    <div>SignUpPage</div>
-  )
+    <div className=" h-[100vh] flex items-center justify-center">
+      <SignupForm />
+    </div>
+  );
 }
-
-export default LoginPage
