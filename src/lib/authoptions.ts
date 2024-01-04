@@ -5,6 +5,9 @@ const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/login"
+  },
   providers: [
     CredentialsProvider({
       type: "credentials",
@@ -15,8 +18,6 @@ const authOptions: NextAuthOptions = {
           email: string;
           password: string;
         };
-
-        console.log("Login", email, password);
 
         const login = await fetch(`http://localhost:3000/api/auth/login`, {
           method: "POST",
