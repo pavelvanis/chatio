@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { getServerSession } from "next-auth";
-import authOptions from "@/lib/authoptions";
-import { redirect } from "next/navigation";
+import { SocketProvider } from "@/components/providers/socket-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +15,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <SocketProvider>
+        <body className={inter.className}>{children}</body>
+      </SocketProvider>
     </html>
   );
 }
