@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
+import { twMerge } from "tailwind-merge";
 
-const ServersBar = () => {
+type Props = React.HTMLProps<HTMLDivElement> & {};
+
+const ServersBar: React.FC<Props> = ({ className, ...props }) => {
   return (
-    <nav className=' h-full w-40 bg-slate-300'>ServersBar</nav>
-  )
-}
+    <nav className={twMerge(" h-full w-40 bg-slate-300", className)}>
+      ServersBar
+    </nav>
+  );
+};
 
-export default ServersBar
+export default ServersBar;
