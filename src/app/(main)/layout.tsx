@@ -5,15 +5,15 @@ import React from "react";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="h-full w-full flex max-w-7xl mx-auto">
-      <div className="grow max-h-[calc(100vh-3rem)]">
+    <div className="h-full flex">
+      <div className="grow">
         <ProfileBar />
-        <div className=" h-full flex">
-          <ServersBar className="hidden mobile:block" />
-          <main className="grow">{children}</main>
+        <div className="h-full flex max-h-[calc(100vh-3rem)]">
+          <ServersBar />
+          {children}
         </div>
       </div>
-      <MembersBar className="hidden tablet:block" />
+      <MembersBar />
     </div>
   );
 };
