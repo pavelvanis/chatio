@@ -12,16 +12,14 @@ const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user, session, trigger }) {
-      console.log("jwt callback", { token, user, session });
+      // console.log("jwt callback", { token, user, session });
       if (user) {
         return { user: user };
       }
       return token;
     },
     async session({ session, token }) {
-      console.log("session callback", { session, token });
-
-      console.log("user", token.user);
+      // console.log("session callback", { session, token });
 
       const user = token.user as IUser;
 
