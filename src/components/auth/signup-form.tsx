@@ -6,11 +6,9 @@ import Button from "../ui/button";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { IUser } from "@/models/user";
 
-type SignupCredentialsType = {
-  name: string;
-  email: string;
-  image: string;
+type SignupCredentialsType = IUser & {
   password: string;
 };
 
@@ -22,7 +20,7 @@ const SignupForm = () => {
     email: "",
     password: "",
     name: "",
-    image: "",
+    avatar: "",
   });
 
   const onSubmit = async (e: FormEvent) => {
@@ -89,7 +87,7 @@ const SignupForm = () => {
             type="url"
             placeholder="Image URL"
             required={true}
-            onChange={(e) => (credentials.current.image = e.target.value)}
+            onChange={(e) => (credentials.current.avatar = e.target.value)}
           />
         </div>
         <div className=" space-y-1">
