@@ -5,11 +5,9 @@ import UserModel from "./user";
 export interface IServer {
   name: string;
   description: string;
-  members: mongoose.Types.ObjectId[];
-  admins: mongoose.Types.ObjectId[];
-  owner: mongoose.Types.ObjectId;
   private: boolean;
   inviteCode: string;
+  owner: mongoose.Types.ObjectId; // Reference to a User document
 }
 
 // Interface of Server methods
@@ -28,14 +26,6 @@ const ServerSchema = new mongoose.Schema<IServer, {}, Methods>(
     description: {
       type: String,
       required: [true, "Add description"],
-    },
-    members: {
-      type: [{ type: Schema.Types.ObjectId, ref: "User" }],
-      required: [true, "Add members"],
-    },
-    admins: {
-      type: [{ type: Schema.Types.ObjectId, ref: "User" }],
-      required: [true, "Add admins"],
     },
     owner: {
       type: Schema.Types.ObjectId,
@@ -111,18 +101,12 @@ ServerSchema.pre("findOneAndUpdate", async function (next) {
 });
 
 ServerSchema.methods.checkUsersExistence = async function () {
-  const existingMembers = await UserModel.find({ _id: { $in: this.members } });
-  const existingAdmins = await UserModel.find({ _id: { $in: this.admins } });
   const existingOwner = await UserModel.findOne({ _id: this.owner });
 
-  if (
-    existingMembers.length !== this.members.length ||
-    existingAdmins.length !== this.admins.length ||
-    !existingOwner
-  ) {
+  if (!existingOwner) {
     const error = new mongoose.Error.ValidationError();
 
-    error.message = "One or more users do not exist";
+    error.message = "Owner does not exist";
 
     throw error;
   }
