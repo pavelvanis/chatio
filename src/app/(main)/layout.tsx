@@ -10,8 +10,6 @@ import React from "react";
 const MainLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getServerSession(authOptions);
 
-  console.log("session", session);
-
   // Redirect when user is not logged in
   if (!session) return redirect("/login");
   return (
@@ -23,7 +21,6 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
           {children}
         </div>
       </div>
-      <MembersBar />
     </div>
   );
 };

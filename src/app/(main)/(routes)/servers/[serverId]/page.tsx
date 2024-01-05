@@ -1,11 +1,17 @@
 "use client";
-import { useParams } from 'next/navigation'
+import { useServer } from "@/components/providers/server-provider";
+import { useParams } from "next/navigation";
+import { use, useEffect } from "react";
 
 const ServerIdPage = () => {
-  const params = useParams<{serverId: string}>()
-  return (
-    <div>server: {params?.serverId}</div>
-  )
-}
+  const { server, setServer } = useServer();
+  const params = useParams<{ serverId: string }>();
 
-export default ServerIdPage
+  useEffect(() => {
+    console.log("params",params?.serverId);
+  }, [params?.serverId]);
+  
+  return <div>server: {server?.name}</div>;
+};
+
+export default ServerIdPage;

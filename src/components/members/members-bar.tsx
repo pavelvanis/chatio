@@ -1,9 +1,12 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-type Props = React.HTMLProps<HTMLDivElement> & {
+const getMembers = async () => {
+  const members = [];
+  return [];
+}
 
-};
+type Props = React.HTMLProps<HTMLDivElement> & {};
 
 const MembersBar: React.FC<Props> = ({ className, ...props }) => {
   return (
