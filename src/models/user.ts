@@ -5,7 +5,7 @@ import mongoose, { Model, models } from "mongoose";
 export interface IUser {
   name: string;
   email: string;
-  image: string;
+  avatar: string;
   password: string;
 }
 
@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema<IUser, {}, Methods>(
         "Please add a valid email",
       ],
     },
-    image: {
+    avatar: {
       type: String,
     },
     password: {
