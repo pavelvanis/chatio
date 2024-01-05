@@ -1,5 +1,6 @@
 import mongoose, { Model, Schema, models } from "mongoose";
 import UserModel from "./user";
+import MemberShipModel from "./member-ship";
 
 // Interface of Server
 export interface IServer {
@@ -86,6 +87,27 @@ ServerSchema.pre("save", async function (next) {
   }
 
   next();
+});
+
+// Save server owner as a member
+ServerSchema.pre("save", async function (next) {
+  const existingOwner = await UserModel.findOne({ _id: this.owner });
+
+  if (existingOwner) {
+    MemberShipModel.create({
+      server: this._id,
+      user: this.owner,
+      role: "owner",
+    });
+    console.log("Owner created");
+    next();
+  } else {
+    const error = new mongoose.Error.ValidationError();
+
+    error.message = "This owner does not exist";
+
+    return next(error);
+  }
 });
 
 // Check if users exist before saving
