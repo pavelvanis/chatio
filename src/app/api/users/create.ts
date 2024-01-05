@@ -30,8 +30,6 @@ export const create = async (req: NextRequest) => {
     const createUser = await UserModel.create(body);
     // ..
 
-    console.log("User was created successfully");
-
     // Return user ..
     return NextResponse.json(createUser, { status: 200 });
   } catch (error) {
