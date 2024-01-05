@@ -1,4 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Model, models } from "mongoose";
+import ServerModel from "./server";
+import UserModel from "./user";
 
 export interface IMembership {
   server: mongoose.Types.ObjectId; // Reference to a Server document
@@ -12,10 +14,12 @@ const MemberShipSchema = new mongoose.Schema<IMembership, {}, Methods>(
   {
     server: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: ServerModel,
       required: [true, "Add server"],
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: UserModel,
       required: [true, "Add user"],
     },
     role: {
@@ -44,3 +48,10 @@ const MemberShipSchema = new mongoose.Schema<IMembership, {}, Methods>(
     },
   }
 );
+
+// Check if User or Server exist before saving ...
+// ...
+
+const MemberShipModel = models.membership || mongoose.model("membership", MemberShipSchema);
+
+export default MemberShipModel as Model<IMembership, {}, Methods>;
