@@ -24,7 +24,7 @@ export const POST = async (req: NextRequest) => {
     // ... Create JWT token
     // 
 
-    return NextResponse.json({ email: email, password: password });
+    return NextResponse.json(user);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: error }, { status: 400 });
