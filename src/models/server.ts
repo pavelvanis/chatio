@@ -113,7 +113,7 @@ ServerSchema.methods.checkUsersExistence = async function () {
 };
 
 // If model exists, use it, else create it
-const ServerModel = models.Server || mongoose.model("Server", ServerSchema);
+const ServerModel = models.server || mongoose.model("server", ServerSchema);
 
 // Export model
 export default ServerModel as Model<IServer, {}, Methods>;
