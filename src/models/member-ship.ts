@@ -5,7 +5,7 @@ import UserModel from "./user";
 export interface IMembership {
   server: mongoose.Types.ObjectId; // Reference to a Server document
   user: mongoose.Types.ObjectId; // Reference to a User document
-  role: "member" | "admin";
+  role: "member" | "admin" | "owner";
 }
 
 interface Methods {}
@@ -25,7 +25,7 @@ const MemberShipSchema = new mongoose.Schema<IMembership, {}, Methods>(
     role: {
       type: String,
       required: [true, "Add role"],
-      enum: ["member", "admin"],
+      enum: ["member", "admin", "owner"],
       default: "member",
     },
   },
