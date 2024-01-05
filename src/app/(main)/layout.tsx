@@ -2,6 +2,7 @@ import MembersBar from "@/components/members/members-bar";
 import ProfileBar from "@/components/profile/profile-bar";
 import ServersBar from "@/components/servers/servers-bar";
 import authOptions from "@/lib/authoptions";
+import serversData from "@/test-data/servers";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
