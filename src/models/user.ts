@@ -3,6 +3,7 @@ import mongoose, { Model, models } from "mongoose";
 
 // Interface of user
 export interface IUser {
+  id?: string;
   name: string;
   email: string;
   avatar: string;
@@ -83,7 +84,7 @@ UserSchema.pre("save", async function (next) {
 });
 
 // If model exists, use it, else create it
-const UserModel = models.User || mongoose.model("User", UserSchema);
+const UserModel = models.user || mongoose.model("user", UserSchema);
 
 // Export model
 export default UserModel as Model<IUser, {}, Methods>;
