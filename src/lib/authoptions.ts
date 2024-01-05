@@ -1,3 +1,4 @@
+import { IUser } from "@/models/user";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -5,8 +6,27 @@ const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/login"
+    signIn: "/login",
+  },
+  callbacks: {
+    async jwt({ token, user, session, trigger }) {
+      console.log("jwt callback", { token, user, session });
+      if (user) {
+        return { user: user };
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      console.log("session callback", { session, token });
+
+      console.log("user", token.user);
+
+      const user = token.user as IUser;
+
+      return { ...session, user: { ...user } };
+    },
   },
   providers: [
     CredentialsProvider({
@@ -24,14 +44,12 @@ const authOptions: NextAuthOptions = {
           body: JSON.stringify({ email, password }),
         });
 
-        const res = await login.json();
-
-        console.log(res);
+        const user = await login.json();
 
         if (login.ok) {
-          return res;
+          return user;
         } else {
-          throw new Error(res.message);
+          throw new Error(user.message);
         }
       },
     }),
