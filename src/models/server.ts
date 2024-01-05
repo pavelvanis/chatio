@@ -4,6 +4,7 @@ import MemberShipModel from "./member-ship";
 
 // Interface of Server
 export interface IServer {
+  id?: string;
   name: string;
   description: string;
   private: boolean;
