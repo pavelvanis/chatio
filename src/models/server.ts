@@ -14,6 +14,10 @@ export interface IServer {
 // Interface of Server methods
 interface Methods {
   checkUsersExistence: () => Promise<void>;
+  addMember: (userId: mongoose.Types.ObjectId) => Promise<void>;
+  removeMember: (userId: mongoose.Types.ObjectId) => Promise<void>;
+  addAdmin: (userId: mongoose.Types.ObjectId) => Promise<void>;
+  removeAdmin: (userId: mongoose.Types.ObjectId) => Promise<void>;
 }
 
 // Create Server schema
@@ -60,6 +64,74 @@ const ServerSchema = new mongoose.Schema<IServer, {}, Methods>(
     },
   }
 );
+
+ServerSchema.methods.addMember = async function (userId) {
+  const existingUser = await UserModel.findOne({ _id: userId });
+
+  if (existingUser) {
+    await MemberShipModel.create({
+      server: this._id,
+      user: userId,
+      role: "member",
+    });
+  } else {
+    const error = new mongoose.Error.ValidationError();
+
+    error.message = "This user does not exist";
+
+    throw error;
+  }
+};
+
+ServerSchema.methods.removeMember = async function (userId) {
+  const existingUser = await UserModel.findOne({ _id: userId });
+
+  if (existingUser) {
+    await MemberShipModel.deleteOne({ server: this._id, user: userId });
+  } else {
+    const error = new mongoose.Error.ValidationError();
+
+    error.message = "This user does not exist";
+
+    throw error;
+  }
+};
+
+ServerSchema.methods.addAdmin = async function (userId) {
+  const existingUser = await UserModel.findOne({ _id: userId });
+
+  if (existingUser) {
+    await MemberShipModel.updateOne(
+      { server: this._id, user: userId },
+      { role: "admin" },
+      { new: true }
+    );
+  } else {
+    const error = new mongoose.Error.ValidationError();
+
+    error.message = "This user does not exist";
+
+    throw error;
+  }
+};
+
+ServerSchema.methods.removeAdmin = async function (userId) {
+  const existingUser = await UserModel.findOne({ _id: userId });
+
+  if (existingUser) {
+    await MemberShipModel.updateOne(
+      { server: this._id, user: userId },
+      { role: "member" },
+      { new: true }
+    );
+  } else {
+    const error = new mongoose.Error.ValidationError();
+
+    error.message = "This user does not exist";
+
+    throw error;
+  }
+};
 
 // Generate invite code before saving
 ServerSchema.pre("save", async function (next) {
