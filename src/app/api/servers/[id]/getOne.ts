@@ -1,7 +1,5 @@
-import connectDB from "@/lib/mongo";
 import { errorHandler } from "@/lib/services/apiErrorHandler";
 import ServerModel from "@/models/server";
-import UserModel from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
 
 type Props = {
@@ -13,21 +11,19 @@ type Props = {
 export const getOne = async (req: NextRequest, { params: { id } }: Props) => {
   try {
 
-    await connectDB();
-
     //
     // Check JWT
     //
 
     // Get All Users ..
-    const user = await ServerModel.findById(id);
-    if (!user) {
+    const server = await ServerModel.findById(id);
+    if (!server) {
       return NextResponse.json({ message: "Server not found" }, { status: 404 });
     }
     // ..
 
     // Return User
-    return NextResponse.json(user);
+    return NextResponse.json(server);
   } catch (error) {
     // Handle Errors
     return errorHandler(error);

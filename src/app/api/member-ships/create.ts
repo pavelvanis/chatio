@@ -1,4 +1,3 @@
-import connectDB from "@/lib/mongo";
 import { errorHandler } from "@/lib/services/apiErrorHandler";
 import MemberShipModel, { IMembership } from "@/models/member-ship";
 import { NextRequest, NextResponse } from "next/server";
@@ -10,8 +9,6 @@ export const create = async (req: NextRequest) => {
     //
     // ... Check JWT
     //
-
-    await connectDB();
 
     // Create user ..
     const createUser = await MemberShipModel.create(body);

@@ -1,12 +1,9 @@
-import connectDB from "@/lib/mongo";
 import UserModel from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   try {
     const { email, password } = await req.json();
-
-    await connectDB();
 
     // Check if user exist in database ..
     const user = await UserModel.findOne({ email });
