@@ -1,8 +1,10 @@
-import React from 'react'
+"use client";
+import { useParams } from 'next/navigation'
 
 const ServerIdPage = () => {
+  const params = useParams<{serverId: string}>()
   return (
-    <div>ServerIdPage</div>
+    <div>server: {params?.serverId}</div>
   )
 }
 
