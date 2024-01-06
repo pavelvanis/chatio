@@ -55,7 +55,7 @@ export default async function handler(
         .json({ error: "User is not member of this server" });
     }
 
-    const message = await MessageModel.create({ text: content, user: user.id });
+    const message = await MessageModel.create({ text: content, user: user.id, server: serverId });
 
     const chatKey = `chat:${serverId}/messages`;
 
