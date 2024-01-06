@@ -10,7 +10,6 @@ type Props = {
 
 export const getOne = async (req: NextRequest, { params: { id } }: Props) => {
   try {
-
     //
     // Check JWT
     //
@@ -18,7 +17,10 @@ export const getOne = async (req: NextRequest, { params: { id } }: Props) => {
     // Get All Users ..
     const server = await ServerModel.findById(id);
     if (!server) {
-      return NextResponse.json({ message: "Server not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "Server not found" },
+        { status: 404 }
+      );
     }
     // ..
 

@@ -1,8 +1,6 @@
 "use client";
-import ServerModel, { IServer } from "@/models/server";
-import { set } from "mongoose";
+import { IServer } from "@/models/server";
 import { useParams } from "next/navigation";
-import { useLocation } from "react-router-dom";
 import { createContext, useContext, useEffect, useState } from "react";
 
 // type ServerContextType = IServer & {};
@@ -27,18 +25,18 @@ export const ServerProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     console.log("PARAMS", params);
 
-    if (params?.serverId) {
-      fetch(`/api/servers/${params.serverId}`)
-        .then((response) => response.json())
-        .then((server) => {
-          setServer(server);
-          console.log("Getter server: ",server);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    }
-  }, []);
+    // if (params?.serverId) {
+    //   fetch(`/api/servers/${params.serverId}`)
+    //     .then((response) => response.json())
+    //     .then((server) => {
+    //       setServer(server);
+    //       console.log("Getter server: ",server);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error:", error);
+    //     });
+    // }
+  }, [params?.serverId]);
 
   return (
     <ServerContext.Provider value={{ server, setServer }}>

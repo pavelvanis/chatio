@@ -5,7 +5,7 @@ import React from "react";
 
 const SessionReader = () => {
   const session = useSession();
-  console.log(session);
+  // console.log(session);
   return <>{session?.data?.user?.email}</>;
 };
 
