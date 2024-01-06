@@ -7,8 +7,8 @@ export interface IMessage {
   id?: string;
   text: string;
   timestamp: Schema.Types.Date;
-  user: Schema.Types.ObjectId;
-  server: Schema.Types.ObjectId;
+  userId: Schema.Types.ObjectId;
+  serverId: Schema.Types.ObjectId;
 }
 
 interface IMethods {}
@@ -26,11 +26,11 @@ const MessageSchema = new Schema<IMessage, {}, IMethods>(
       required: true,
       default: Date.now,
     },
-    server: {
+    serverId: {
       type: Schema.Types.ObjectId,
       required: true,
     },
-    user: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: UserModel,
       required: true,
@@ -57,7 +57,7 @@ const MessageSchema = new Schema<IMessage, {}, IMethods>(
 );
 
 MessageSchema.pre("save", async function (next) {
-  const existingUser = await UserModel.findById(this.user);
+  const existingUser = await UserModel.findById(this.userId);
   if (!existingUser) {
     const error = new mongoose.Error.ValidationError();
 
