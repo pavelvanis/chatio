@@ -1,11 +1,12 @@
 import React from "react";
-import SessionReader from "../session-reader";
+import Nickname from "./nickname";
+import ServerInfo from "./server-info";
 
 const ProfileBar = () => {
   return (
-    <header className="w-full h-12 bg-slate-200">
-      ProfileBar
-      <SessionReader />
+    <header className="w-full bg-slate-200 flex items-center">
+      <Nickname />
+      <ServerInfo />
     </header>
   );
 };
