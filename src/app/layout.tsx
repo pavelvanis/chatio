@@ -13,17 +13,18 @@ export const metadata: Metadata = {
   description: "Realtime chat app",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  await connectDB();
   return (
     <html lang="en">
       <SocketProvider>
         <SessionProvider>
-          <body className={inter.className}>{children}</body>
+          <ServerProvider>
+            <body className={inter.className}>{children}</body>
+          </ServerProvider>
         </SessionProvider>
       </SocketProvider>
     </html>
