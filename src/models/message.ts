@@ -8,6 +8,7 @@ export interface IMessage {
   text: string;
   timestamp: Schema.Types.Date;
   user: Schema.Types.ObjectId;
+  server: Schema.Types.ObjectId;
 }
 
 interface IMethods {}
@@ -24,6 +25,10 @@ const MessageSchema = new Schema<IMessage, {}, IMethods>(
       type: Date,
       required: true,
       default: Date.now,
+    },
+    server: {
+      type: Schema.Types.ObjectId,
+      required: true,
     },
     user: {
       type: Schema.Types.ObjectId,
