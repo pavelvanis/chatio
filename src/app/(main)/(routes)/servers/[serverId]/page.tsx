@@ -1,8 +1,10 @@
-"use client"
+import ChatInput from "@/components/chat/chat-input";
 
-import { useServer } from "@/components/providers/server-provider";
-
-export default function Page() {
-  const {server} = useServer();
-  return <div>server: {server?.name}</div>;
+export default function ChatPage() {
+  return (
+    <div className="flex flex-col h-full">
+      <div className="grow">Fututer chat</div>
+      <ChatInput />
+    </div>
+  );
 }

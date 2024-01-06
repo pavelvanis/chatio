@@ -15,7 +15,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
     <div className="h-full flex">
       <div className="grow">
         <ProfileBar />
-        <div className="h-full flex max-h-[calc(100vh-3rem)]">
+        <div className="h-full flex max-h-[calc(100vh-3.5rem)]">
           <ServersBar />
           {children}
         </div>
