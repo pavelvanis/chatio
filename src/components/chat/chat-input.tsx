@@ -25,7 +25,7 @@ const ChatInput = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="">
       <form onSubmit={onSubmit}>
         <Input
           className="h-10"
