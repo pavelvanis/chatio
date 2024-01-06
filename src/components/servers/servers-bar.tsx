@@ -26,10 +26,9 @@ type Props = React.HTMLProps<HTMLDivElement> & {};
 
 const ServersBar: React.FC<Props> = async ({ className }) => {
   const servers = await getServers();
-  // console.log("servers:", servers);
-  // console.log(servers[0].name);
+
   return (
-    <nav className={twMerge(" h-full w-40 bg-slate-300 flex flex-col", className)}>
+    <nav className={twMerge(" h-full w-40 bg-slate-300 flex flex-col p-2 space-y-2", className)}>
       {servers.map((server, index) => (
         <ServerItem
           key={index}
@@ -42,7 +41,6 @@ const ServersBar: React.FC<Props> = async ({ className }) => {
             owner: server.owner,
           }}
         />
-        // <div key={index}>{server.name}</div>
       ))}
     </nav>
   );

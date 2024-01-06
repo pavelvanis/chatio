@@ -8,7 +8,7 @@ const Nickname = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="flex items-center gap-1 w-40 p-1.5 px-2.5 ">
+    <div className="flex items-center gap-1 w-40 p-1.5 px-2 ">
       <Image
         className=" w-10 h-10"
         src={Avatar}
