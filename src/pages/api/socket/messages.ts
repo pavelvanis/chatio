@@ -1,5 +1,6 @@
 import authOptions from "@/lib/authoptions";
 import MemberShipModel from "@/models/member-ship";
+import MessageModel from "@/models/message";
 import ServerModel from "@/models/server";
 import { NextApiResponseServerIO } from "@/types";
 import { NextApiRequest } from "next";
@@ -54,8 +55,13 @@ export default async function handler(
         .json({ error: "User is not member of this server" });
     }
 
-    
+    const message = await MessageModel.create({ text: content, user: user.id });
 
+    const chatKey = `chat:${serverId}/messages`;
+
+    res.socket.server.io.emit(chatKey, message);
+
+    return res.status(201).json({ message });
   } catch (error) {
     console.error("[MESSAGES_POST]", error);
     return res.status(500).json({ error: "Internal server error" });
