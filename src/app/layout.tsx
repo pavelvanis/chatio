@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Averia_Libre, Inter, Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import { SocketProvider } from "@/components/providers/socket-provider";
 import SessionProvider from "@/components/providers/session-provider";
 import { ServerProvider } from "@/components/providers/server-provider";
-import connectDB from "@/lib/mongo";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const font = Averia_Libre({
+  weight: ["300", "400", "700"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "ChatIo",
