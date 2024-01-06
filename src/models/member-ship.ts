@@ -14,7 +14,7 @@ const MemberShipSchema = new mongoose.Schema<IMembership, {}, Methods>(
   {
     server: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: ServerModel,
+      // ref: ServerModel,
       required: [true, "Add server"],
     },
     user: {
