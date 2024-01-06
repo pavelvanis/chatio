@@ -35,6 +35,7 @@ const ServerSchema = new mongoose.Schema<IServer, {}, Methods>(
     },
     owner: {
       type: Schema.Types.ObjectId,
+      ref: UserModel,
       required: [true, "Add owner"],
     },
     private: {
