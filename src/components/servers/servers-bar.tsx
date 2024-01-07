@@ -8,6 +8,7 @@ import React from "react";
 import { twMerge } from "tailwind-merge";
 
 import ServerItem from "./server-item";
+import AddServer from "./server-add";
 
 const getServers = async () => {
   const session = await getServerSession(authOptions);
@@ -28,7 +29,13 @@ const ServersBar: React.FC<Props> = async ({ className }) => {
   const servers = await getServers();
 
   return (
-    <nav className={twMerge(" h-full w-40 bg-slate-300 flex flex-col p-2 space-y-2", className)}>
+    <nav
+      className={twMerge(
+        " h-full w-40 bg-slate-300 flex flex-col p-2 space-y-2",
+        className
+      )}
+    >
+      <AddServer />
       {servers.map((server, index) => (
         <ServerItem
           key={index}

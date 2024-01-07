@@ -4,15 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 const MESSAGES_BATCH_SIZE = 15;
 
-export async function GET(res: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(res.nextUrl);
+    const { searchParams } = new URL(req.nextUrl);
 
     const cursor = searchParams.get("cursor");
     const serverId = searchParams.get("serverId");
-
-    console.log(cursor);
-    console.log("SERCH PARAMS", searchParams);
 
     if (!serverId) {
       return new NextResponse("Server ID is missing!", { status: 400 });
@@ -39,16 +36,9 @@ export async function GET(res: NextRequest) {
 
     let nextCursor = null;
 
-    console.log("LENGTH", messages.length);
-    messages.forEach((element) => {
-      console.log(element.content);
-    });
-
     if (messages.length === MESSAGES_BATCH_SIZE) {
       nextCursor = messages[MESSAGES_BATCH_SIZE - 1].id;
     }
-
-    console.log("CURSOR", nextCursor);
 
     return NextResponse.json({ items: messages, nextCursor });
   } catch (error) {

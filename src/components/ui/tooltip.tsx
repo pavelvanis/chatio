@@ -9,18 +9,18 @@ const TooltipProvider = TooltipPrimitive.Provider;
 const Tooltip = TooltipPrimitive.Root;
 
 const TooltipTrigger = React.forwardRef<
-React.ElementRef<typeof TooltipPrimitive.Trigger>,
-React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger>
+  React.ElementRef<typeof TooltipPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger>
 >(({ className, ...props }, ref) => (
-<TooltipPrimitive.Trigger
-  ref={ref}
-  className={twMerge(
-    " border-none bg-transparent flex items-center justify-center",
-    className
-  )}
-  {...props}
-/>
-));;
+  <TooltipPrimitive.Trigger
+    ref={ref}
+    className={twMerge(
+      " border-none bg-transparent flex items-center justify-center",
+      className
+    )}
+    {...props}
+  />
+));
 
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
