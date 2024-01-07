@@ -27,7 +27,7 @@ const ChatInput = () => {
   };
 
   return (
-    <div className="">
+    <div className="p-4 pt-2">
       <form onSubmit={onSubmit}>
         <Input
           ref={inputRef}
