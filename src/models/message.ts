@@ -1,11 +1,10 @@
 import { Model, Schema, models } from "mongoose";
 import UserModel from "./user";
 import mongoose from "mongoose";
-import { Mode } from "fs";
 
 export interface IMessage {
   id?: string;
-  text: string;
+  content: string;
   timestamp: Schema.Types.Date;
   userId: Schema.Types.ObjectId;
   serverId: Schema.Types.ObjectId;
@@ -15,7 +14,7 @@ interface IMethods {}
 
 const MessageSchema = new Schema<IMessage, {}, IMethods>(
   {
-    text: {
+    content: {
       type: String,
       required: true,
       minlength: 1,
@@ -32,7 +31,7 @@ const MessageSchema = new Schema<IMessage, {}, IMethods>(
     },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: UserModel,
+      // ref: UserModel,
       required: true,
     },
   },
@@ -68,6 +67,6 @@ MessageSchema.pre("save", async function (next) {
   next();
 });
 
-const MessageModel = models.Message || mongoose.model("message", MessageSchema);
+const MessageModel = models.message || mongoose.model("message", MessageSchema);
 
 export default MessageModel as Model<IMessage, {}, IMethods>;
