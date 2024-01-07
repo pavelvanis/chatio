@@ -13,6 +13,7 @@ import { IUser } from "@/models/user";
 
 import ChatWelcome from "./chat-welcome";
 import ChatItem from "./chat-item";
+import { useChatSocket } from "@/hooks/use-socket";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -25,7 +26,10 @@ type MessageWithUser = IMessage & { userId: IUser };
 
 const ChatMasseges: React.FC<ChatMassegesProps> = ({ apiUrl, socketUrl }) => {
   const { server } = useServer();
+
   const queryKey = `chat:${server?.id}`;
+  const addKey = `chat:${server?.id}:messages`;
+  const updateKey = `chat:${server?.id}:message:update`;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
@@ -34,6 +38,8 @@ const ChatMasseges: React.FC<ChatMassegesProps> = ({ apiUrl, socketUrl }) => {
       paramKey: "serverId",
       paramValue: server?.id,
     });
+
+    useChatSocket({queryKey, updateKey, addKey })
 
   if (status === "loading") {
     return (
