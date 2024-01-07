@@ -1,14 +1,8 @@
 import authOptions from "@/lib/authoptions";
 import { getServerSession } from "next-auth";
 import React from "react";
+
 import UserAvatar from "../user-avatar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
-import { LogOut } from "lucide-react";
 import UserSignout from "./user-signout";
 
 const Nickname = async () => {
