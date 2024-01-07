@@ -1,7 +1,7 @@
 "use client";
 import { IServer } from "@/models/server";
 import { IUser } from "@/models/user";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type ServerContextType = { server: IServer | null; members: IUser[] | null };
@@ -26,10 +26,14 @@ export const ServerProvider = ({ children }: { children: React.ReactNode }) => {
       fetch(`/api/servers/${params.serverId}`)
         .then((response) => response.json())
         .then((server) => {
+          if (server.error) {
+            return notFound();
+          }
           setServer(server);
         })
         .catch((error) => {
           console.error(error);
+          return notFound();
         });
       fetch(`/api/servers/${params.serverId}/members`)
         .then((response) => response.json())

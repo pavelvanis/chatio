@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 const AddServer = () => {
   const [error, setError] = useState<any | null>();
-  const inviteCode = useRef<string>("");
+  const [inviteCode, setInviteCode] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
   const { data: user } = useSession();
 
@@ -20,7 +20,7 @@ const AddServer = () => {
   const url = qs.stringifyUrl({
     url: "/api/servers/invite",
     query: {
-      inviteCode: inviteCode.current,
+      inviteCode: inviteCode,
       userId: userId || "",
     },
   });
@@ -31,6 +31,7 @@ const AddServer = () => {
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
+          console.log(data);
           if (data.error) {
             setError(data.error);
           } else {
@@ -40,6 +41,7 @@ const AddServer = () => {
           }
         });
     } catch (error) {
+      setError(error);
       console.log(error);
     }
   };
@@ -54,9 +56,10 @@ const AddServer = () => {
       </div>
       <form ref={formRef} onSubmit={addServer}>
         <Input
+          required
           placeholder="Invite code"
           className=" rounded-md"
-          onChange={(e) => (inviteCode.current = e.target.value)}
+          onChange={(e) => setInviteCode(e.target.value)}
         />
       </form>
       {error && <p className="text-red-900 text-xs">{error}</p>}

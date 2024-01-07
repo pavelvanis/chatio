@@ -1,18 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import qs from "query-string";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 import { useServer } from "../providers/server-provider";
 
-import { MinusCircle } from "lucide-react";
+import { ClipboardCheck, CopyCheck, MinusCircle } from "lucide-react";
 import { ActionTooltip } from "../action-tooltip";
 
 const ServerActions = () => {
+  const [isCoppied, setIsCoppied] = useState(false);
   const { server } = useServer();
-  const { data: user} = useSession();
+  const { data: user } = useSession();
+
+  const inviteCodeRef = useRef(null);
 
   const router = useRouter();
 
@@ -23,8 +26,6 @@ const ServerActions = () => {
         query: { serverId: server?.id, userId: user?.user.id },
       });
 
-      console.log("object");
-
       fetch(url, {
         method: "DELETE",
         headers: {
@@ -34,15 +35,30 @@ const ServerActions = () => {
         .then((res) => res.json())
         .then((data) => console.log(data));
 
-        router.push("/");
-      
+      router.push("/");
     } catch (error) {
       console.error(error);
     }
   };
 
+  const copyInviteCode = () => {
+    if (!server?.inviteCode) return;
+    navigator.clipboard.writeText(server.inviteCode);
+    setIsCoppied(true);
+    setInterval(() => setIsCoppied(false), 1000 * 60);
+  };
+
   return (
-    <div className=" flex items-center p-1.5 px-2.5">
+    <div className=" flex items-center p-1.5 px-2.5 gap-6">
+      <ActionTooltip label="Invite Code">
+        <button
+          className=" flex items-center gap-2 cursor-pointer bg-zinc-300 border border-zinc-800 rounded-xl px-2.5 py-0.5"
+          onClick={() => copyInviteCode()}
+        >
+          <span ref={inviteCodeRef}>{server?.inviteCode}</span>
+          {isCoppied && <ClipboardCheck className="w-4 h-4 text-zinc-700" />}
+        </button>
+      </ActionTooltip>
       <ActionTooltip label="Leave Server">
         <button
           className=" flex items-center border-none bg-transparent cursor-pointer"
