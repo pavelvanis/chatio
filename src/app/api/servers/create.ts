@@ -5,7 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 export const create = async (req: NextRequest) => {
   try {
     const body = (await req.json()) as IServer;
-    
+
+    console.log(body);
+
     // Create user ..
     const createServer = await ServerModel.create(body);
     // ..
