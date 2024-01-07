@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 export interface IMessage {
   id?: string;
   content: string;
-  timestamp: Schema.Types.Date;
+  timestamp: Date;
   userId: Schema.Types.ObjectId;
   serverId: Schema.Types.ObjectId;
 }
@@ -31,7 +31,7 @@ const MessageSchema = new Schema<IMessage, {}, IMethods>(
     },
     userId: {
       type: Schema.Types.ObjectId,
-      // ref: UserModel,
+      ref: UserModel,
       required: true,
     },
   },
