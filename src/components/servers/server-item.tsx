@@ -20,7 +20,7 @@ const ServerItem: React.FC<ServerItemProps> = ({ name, id }) => {
   useEffect(() => {
     if (pathname?.startsWith(`/servers/${id}`)) setActive(true);
     else setActive(false);
-  }, [pathname]);
+  }, [pathname, id]);
 
   return (
     <Link

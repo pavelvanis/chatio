@@ -21,6 +21,7 @@ const TooltipTrigger = React.forwardRef<
     {...props}
   />
 ));
+TooltipTrigger.displayName = TooltipPrimitive.Trigger.displayName;
 
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
