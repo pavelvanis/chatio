@@ -1,11 +1,20 @@
 "use client";
+
 import React from "react";
-import ChatWelcome from "./chat-welcome";
-import { useServer } from "../providers/server-provider";
+
+import { format } from "date-fns";
 import { useChatQuery } from "@/hooks/use-chat-query";
 import { Loader2, ServerCrash } from "lucide-react";
+
+import { useServer } from "../providers/server-provider";
+
 import { IMessage } from "@/models/message";
 import { IUser } from "@/models/user";
+
+import ChatWelcome from "./chat-welcome";
+import ChatItem from "./chat-item";
+
+const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
 interface ChatMassegesProps {
   apiUrl: string;
@@ -52,7 +61,13 @@ const ChatMasseges: React.FC<ChatMassegesProps> = ({ apiUrl, socketUrl }) => {
         {data?.pages.map((page, i) => (
           <React.Fragment key={i}>
             {page.items.map((message: MessageWithUser) => (
-              <div key={message.id}>{message.content}</div>
+              <ChatItem
+                key={message.id}
+                id={message.id?.toString() as string}
+                user={message.userId}
+                timestamp={format(new Date(message.timestamp), DATE_FORMAT)}
+                content={message.content}
+              />
             ))}
           </React.Fragment>
         ))}
