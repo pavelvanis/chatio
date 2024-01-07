@@ -1,24 +1,31 @@
 import authOptions from "@/lib/authoptions";
 import { getServerSession } from "next-auth";
-import Image from "next/image";
 import React from "react";
-import Avatar from "@/../public/avatar.svg";
+import UserAvatar from "../user-avatar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+import { LogOut } from "lucide-react";
+import UserSignout from "./user-signout";
 
 const Nickname = async () => {
   const session = await getServerSession(authOptions);
 
-  return (
-    <div className="flex items-center gap-1 w-40 p-1.5 px-2 ">
-      <Image
-        className=" w-10 h-10"
-        src={Avatar}
-        width={48}
-        height={48}
-        alt="avatar"
-      />
-      {session?.user.name}
-    </div>
-  );
+  if (session) {
+    const user = session.user;
+    return (
+      <div className="flex items-center justify-between gap-2 w-40 p-1.5 px-2 ">
+        <div className="flex items-center gap-2">
+          <UserAvatar src={user.avatar} name={user.name} />
+          <p className=" text-zinc-600 font-normal">{session?.user.name}</p>
+        </div>
+        <UserSignout/>
+      </div>
+    );
+  }
 };
 
 export default Nickname;
