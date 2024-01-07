@@ -7,7 +7,7 @@ type ChatWelcomeProps = {
 
 const ChatWelcome: React.FC<ChatWelcomeProps> = ({ name }) => {
   return (
-    <div>
+    <div className="p-4 pb-1">
       <div className=" bg-zinc-300 h-[75px] w-[75px] rounded-full flex items-center justify-center">
         <Hash className="text-white w-10 h-10" />
       </div>
