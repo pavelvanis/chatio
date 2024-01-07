@@ -15,7 +15,7 @@ export interface IServer {
 // Interface of Server methods
 interface Methods {
   checkUsersExistence: () => Promise<void>;
-  addMember: (userId: mongoose.Types.ObjectId) => Promise<void>;
+  addMember: (userId: string) => Promise<void>;
   removeMember: (userId: mongoose.Types.ObjectId) => Promise<void>;
   addAdmin: (userId: mongoose.Types.ObjectId) => Promise<void>;
   removeAdmin: (userId: mongoose.Types.ObjectId) => Promise<void>;
@@ -70,19 +70,32 @@ const ServerSchema = new mongoose.Schema<IServer, {}, Methods>(
 ServerSchema.methods.addMember = async function (userId) {
   const existingUser = await UserModel.findOne({ _id: userId });
 
-  if (existingUser) {
-    await MemberShipModel.create({
-      server: this._id,
-      user: userId,
-      role: "member",
-    });
-  } else {
+  if (!existingUser) {
     const error = new mongoose.Error.ValidationError();
 
     error.message = "This user does not exist";
 
     throw error;
   }
+
+  const existMember = await MemberShipModel.findOne({
+    server: this._id,
+    user: userId,
+  });
+
+  if (existMember) {
+    const error = new mongoose.Error.ValidationError();
+
+    error.message = "This user is already a member";
+
+    throw error;
+  }
+
+  await MemberShipModel.create({
+    server: this._id,
+    user: userId,
+    role: "member",
+  });
 };
 
 ServerSchema.methods.removeMember = async function (userId) {
