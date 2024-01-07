@@ -57,9 +57,9 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="w-1/3 min-w-[300px] max-w-xl border border-sky-500 rounded  p-5">
+    <div className="w-1/3 min-w-[300px] max-w-xl border rounded-lg shadow-md  p-5">
       <form className="space-y-4" ref={formRef} onSubmit={onSubmit}>
-        <h1 className="mt-0">Sign up</h1>
+        <h1 className="mt-0 mb-5 font-bold text-xl">Sign up</h1>
         <div className=" space-y-1">
           <Label htmlFor="signupName">Name</Label>
           <Input
@@ -86,7 +86,6 @@ const SignupForm = () => {
             id="signupImage"
             type="url"
             placeholder="Image URL"
-            required={true}
             onChange={(e) => (credentials.current.avatar = e.target.value)}
           />
         </div>
@@ -106,10 +105,10 @@ const SignupForm = () => {
           </p>
         )}
         <Button type="submit" className="w-full text-white bg-slate-800">
-          Login
+          Signup
         </Button>
         <div className=" text-center">
-          <Link href="/signup" className=" text-sm">
+          <Link href="/login" className=" text-sm">
             Already have account?
           </Link>
         </div>

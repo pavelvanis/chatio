@@ -32,13 +32,13 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="w-1/3 min-w-[300px] max-w-xl border border-sky-500 rounded  p-5">
+    <div className="w-1/3 min-w-[300px] max-w-xl border rounded-lg shadow-md  p-5">
       <form
         className="space-y-4"
         ref={formRef}
         onSubmit={onSubmit}
       >
-        <h1 className="mt-0">Login</h1>
+        <h1 className="mt-0 mb-5 font-bold text-xl">Login</h1>
         <div className=" space-y-1">
           <Label htmlFor="signupEmail">Email</Label>
           <Input
@@ -68,7 +68,7 @@ const LoginForm = () => {
           Login
         </Button>
         <div className=" text-center">
-            <Link href="/signup" className=" text-sm">Doesnt have an account?</Link>
+            <Link href="/signup" className=" text-sm">Don't have an account?</Link>
         </div>
       </form>
     </div>
