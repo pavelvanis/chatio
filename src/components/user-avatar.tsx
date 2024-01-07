@@ -16,7 +16,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ src, name }) => {
         src={DefaultAvatar}
         width={24}
         height={24}
-        alt={name}
+        alt={name || "avatar"}
         onError={(e) => {
           (e.target as HTMLImageElement) = DefaultAvatar;
         }}
