@@ -4,11 +4,15 @@ import ChatWelcome from "./chat-welcome";
 import { useServer } from "../providers/server-provider";
 import { useChatQuery } from "@/hooks/use-chat-query";
 import { Loader2, ServerCrash } from "lucide-react";
+import { IMessage } from "@/models/message";
+import { IUser } from "@/models/user";
 
 interface ChatMassegesProps {
   apiUrl: string;
   socketUrl: string;
 }
+
+type MessageWithUser = IMessage & { userId: IUser };
 
 const ChatMasseges: React.FC<ChatMassegesProps> = ({ apiUrl, socketUrl }) => {
   const { server } = useServer();
@@ -44,6 +48,15 @@ const ChatMasseges: React.FC<ChatMassegesProps> = ({ apiUrl, socketUrl }) => {
     <div className="grow flex flex-col overflow-y-auto pb-4 p-2">
       <div className="grow" />
       <ChatWelcome name={server?.name} />
+      <div className="flex flex-col-reverse mt-auto">
+        {data?.pages.map((page, i) => (
+          <React.Fragment key={i}>
+            {page.items.map((message: MessageWithUser) => (
+              <div key={message.id}>{message.content}</div>
+            ))}
+          </React.Fragment>
+        ))}
+      </div>
     </div>
   );
 };
