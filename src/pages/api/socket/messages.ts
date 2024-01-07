@@ -56,7 +56,7 @@ export default async function handler(
     }
 
     const message = await MessageModel.create({
-      text: content,
+      content: content,
       userId: user.id,
       serverId: serverId,
     });

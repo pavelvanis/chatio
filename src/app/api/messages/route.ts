@@ -1,4 +1,5 @@
 import MessageModel, { IMessage } from "@/models/message";
+import { timeStamp } from "console";
 import { NextRequest, NextResponse } from "next/server";
 
 const MESSAGES_BATCH_SIZE = 10;
@@ -14,23 +15,21 @@ export async function GET(res: NextRequest) {
       return new NextResponse("Server ID is missing!", { status: 400 });
     }
 
-    let messages: IMessage[] = [];
+    let messages: any[] = [];
 
     if (cursor) {
       messages = await MessageModel.find({ serverId: serverId })
         .skip(1)
         .limit(MESSAGES_BATCH_SIZE)
-        .sort({ createdAt: "desc" })
+        .sort({ timestamp: "desc" })
         .populate({
-          path: "user",
+          path: "userId",
         });
     } else {
       messages = await MessageModel.find({ serverId: serverId })
         .limit(MESSAGES_BATCH_SIZE)
-        .sort({ createdAt: "desc" })
-        .populate({
-          path: "user",
-        });
+        .sort({ timestamp: "desc" })
+        .populate("userId");
     }
 
     let nextCursor = null;
