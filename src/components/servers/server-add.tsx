@@ -17,6 +17,9 @@ const AddServer = () => {
 
   const router = useRouter();
 
+  const session = useSession();
+  const token = session.data?.user.token;
+
   const url = qs.stringifyUrl({
     url: "/api/servers/invite",
     query: {
@@ -28,7 +31,11 @@ const AddServer = () => {
   const addServer = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      fetch(url)
+      fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((res) => res.json())
         .then((data) => {
           console.log(data);

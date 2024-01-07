@@ -1,5 +1,7 @@
 import { useSocket } from "@/components/providers/socket-provider";
+import authOptions from "@/lib/authoptions";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { getServerSession } from "next-auth";
 import qs from "query-string";
 
 interface ChatQueryProps {
@@ -7,6 +9,7 @@ interface ChatQueryProps {
   apiUrl: string;
   paramKey: string;
   paramValue: string | undefined;
+  token: string;
 }
 
 export const useChatQuery = ({
@@ -14,6 +17,7 @@ export const useChatQuery = ({
   apiUrl,
   paramKey,
   paramValue,
+  token,
 }: ChatQueryProps) => {
   const { isConnected } = useSocket();
 
@@ -29,8 +33,14 @@ export const useChatQuery = ({
       { skipNull: true }
     );
 
-    const res = await fetch(url);
-    return res.json();
+    if (token) {
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return res.json();
+    }
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =

@@ -4,9 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const getAll = async (req: NextRequest) => {
   try {
-    //
-    // Check JWT
-    //
 
     // Get All Memberships ..
     const memberships = await MemberShipModel.find({});

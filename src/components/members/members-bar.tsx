@@ -7,7 +7,7 @@ import MemberItem from "./member-item";
 type Props = React.HTMLProps<HTMLDivElement> & {};
 
 const MembersBar: React.FC<Props> = ({ className, ...props }) => {
-  const { server, members } = useServer();
+  const { members } = useServer();
 
   return (
     <div

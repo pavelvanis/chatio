@@ -8,6 +8,7 @@ export interface IUser {
   email: string;
   avatar: string;
   password: string;
+  token?: string;
 }
 
 // Interface of User methods

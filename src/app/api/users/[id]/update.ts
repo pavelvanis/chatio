@@ -11,9 +11,6 @@ type Props = {
 export const update = async (req: NextRequest, { params: { id } }: Props) => {
   try {
     const body = await req.json();
-    //
-    // Check JWT
-    //
 
     // Get All Users ..
     const user = await UserModel.findById(id);
@@ -23,7 +20,6 @@ export const update = async (req: NextRequest, { params: { id } }: Props) => {
     // ..
 
     const updatedUser = await UserModel.findByIdAndUpdate(id, body, {
-      //   projection: { password: 0, __v: 0 },
       new: true,
     });
 

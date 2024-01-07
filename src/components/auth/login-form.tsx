@@ -20,7 +20,6 @@ const LoginForm = () => {
         ...credentials.current,
         redirect: false,
       });
-      console.log(signin);
       if (!signin?.ok) return setError(signin?.error);
       setError(null);
       formRef.current?.reset();

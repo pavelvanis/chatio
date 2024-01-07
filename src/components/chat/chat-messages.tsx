@@ -15,6 +15,7 @@ import ChatWelcome from "./chat-welcome";
 import ChatItem from "./chat-item";
 import { useChatSocket } from "@/hooks/use-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
+import { useSession } from "next-auth/react";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -27,6 +28,8 @@ type MessageWithUser = IMessage & { userId: IUser };
 
 const ChatMasseges: React.FC<ChatMassegesProps> = ({ apiUrl, socketUrl }) => {
   const { server } = useServer();
+  const session = useSession();
+  const token = session.data?.user.token as string;
 
   const queryKey = `chat:${server?.id}`;
   const addKey = `chat:${server?.id}:messages`;
@@ -41,6 +44,7 @@ const ChatMasseges: React.FC<ChatMassegesProps> = ({ apiUrl, socketUrl }) => {
       apiUrl,
       paramKey: "serverId",
       paramValue: server?.id,
+      token: token,
     });
 
   useChatSocket({ queryKey, updateKey, addKey });
@@ -49,7 +53,7 @@ const ChatMasseges: React.FC<ChatMassegesProps> = ({ apiUrl, socketUrl }) => {
     bottomRef,
     loadMore: fetchNextPage,
     shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
-    count: data?.pages?.[0].items.length ?? 0,
+    count: data?.pages?.[0]?.items?.length ?? 0,
   });
 
   if (status === "loading") {
@@ -90,19 +94,21 @@ const ChatMasseges: React.FC<ChatMassegesProps> = ({ apiUrl, socketUrl }) => {
         </div>
       )}
       <div className="flex flex-col-reverse mt-auto">
-        {data?.pages.map((page, i) => (
-          <React.Fragment key={i}>
-            {page.items.map((message: MessageWithUser) => (
-              <ChatItem
-                key={message.id}
-                id={message.id?.toString() as string}
-                user={message.userId}
-                timestamp={format(new Date(message.timestamp), DATE_FORMAT)}
-                content={message.content}
-              />
-            ))}
-          </React.Fragment>
-        ))}
+        {data?.pages?.[0] &&
+          data?.pages?.[0].items &&
+          data?.pages.map((page, i) => (
+            <React.Fragment key={i}>
+              {page.items.map((message: MessageWithUser) => (
+                <ChatItem
+                  key={message.id}
+                  id={message.id?.toString() as string}
+                  user={message.userId}
+                  timestamp={format(new Date(message.timestamp), DATE_FORMAT)}
+                  content={message.content}
+                />
+              ))}
+            </React.Fragment>
+          ))}
       </div>
       <div ref={bottomRef} />
     </div>

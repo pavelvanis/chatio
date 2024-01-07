@@ -5,10 +5,6 @@ import { NextRequest, NextResponse } from "next/server";
 export const getAll = async (req: NextRequest) => {
   try {
 
-    //
-    // Check JWT
-    //
-
     // Get All Users ..
     const servers = await ServerModel.find({});
     // ..

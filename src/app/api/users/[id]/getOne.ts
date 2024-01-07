@@ -10,11 +10,6 @@ type Props = {
 
 export const getOne = async (req: NextRequest, { params: { id } }: Props) => {
   try {
-
-    //
-    // Check JWT
-    //
-
     // Get All Users ..
     const user = await UserModel.findById(id);
     if (!user) {

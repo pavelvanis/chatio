@@ -42,10 +42,12 @@ const authOptions: NextAuthOptions = {
           body: JSON.stringify({ email, password }),
         });
 
-        const user = await login.json();
+        const { user, token } = await login.json();
+
+        console.log(token);
 
         if (login.ok) {
-          return user;
+          return { ...user, token };
         } else {
           throw new Error(user.message);
         }

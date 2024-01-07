@@ -6,10 +6,6 @@ export const create = async (req: NextRequest) => {
   try {
     const body = (await req.json()) as IMembership;
 
-    //
-    // ... Check JWT
-    //
-
     // Create user ..
     const createUser = await MemberShipModel.create(body);
     // ..

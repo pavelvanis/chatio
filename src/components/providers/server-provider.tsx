@@ -1,6 +1,7 @@
 "use client";
 import { IServer } from "@/models/server";
 import { IUser } from "@/models/user";
+import { useSession } from "next-auth/react";
 import { notFound, useParams } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -21,9 +22,16 @@ export const ServerProvider = ({ children }: { children: React.ReactNode }) => {
 
   const params = useParams<{ serverId: string }>();
 
+  const session = useSession();
+  const token = session.data?.user.token;
+
   useEffect(() => {
-    if (params?.serverId) {
-      fetch(`/api/servers/${params.serverId}`)
+    if (params?.serverId && token) {
+      fetch(`/api/servers/${params.serverId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((response) => response.json())
         .then((server) => {
           if (server.error) {
@@ -33,9 +41,12 @@ export const ServerProvider = ({ children }: { children: React.ReactNode }) => {
         })
         .catch((error) => {
           console.error(error);
-          return notFound();
         });
-      fetch(`/api/servers/${params.serverId}/members`)
+      fetch(`/api/servers/${params.serverId}/members`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((response) => response.json())
         .then((members) => {
           setMembers(members);
@@ -44,7 +55,8 @@ export const ServerProvider = ({ children }: { children: React.ReactNode }) => {
           console.error(error);
         });
     }
-  }, [params?.serverId]);
+
+  }, [params, server, token]);
 
   return (
     <ServerContext.Provider value={{ server, members }}>

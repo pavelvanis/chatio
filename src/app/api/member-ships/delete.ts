@@ -1,5 +1,5 @@
 import { errorHandler } from "@/lib/services/apiErrorHandler";
-import MemberShipModel, { IMembership } from "@/models/member-ship";
+import MemberShipModel from "@/models/member-ship";
 import { NextRequest, NextResponse } from "next/server";
 
 export const deleteOne = async (req: NextRequest) => {
@@ -8,8 +8,6 @@ export const deleteOne = async (req: NextRequest) => {
 
     const user = searchParams.get("userId");
     const server = searchParams.get("serverId");
-
-    console.log("SERCH PARAMS", server, user);
 
     if (!server) {
       return new NextResponse("Server ID is missing!", { status: 400 });

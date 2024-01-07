@@ -3,7 +3,7 @@ import React, { FormEvent, useRef, useState } from "react";
 import Input from "../ui/input";
 import Label from "../ui/label";
 import Button from "../ui/button";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { IUser } from "@/models/user";
@@ -23,17 +23,23 @@ const SignupForm = () => {
     avatar: "",
   });
 
+  const session = useSession();
+  const token = session.data?.user.token;
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       // request to create user
       const signup = await fetch("api/users", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ ...credentials.current }),
       });
       // response
       const res = await signup.json();
-      console.log(res);
       // check error
       if (!signup.ok) {
         return setError(res.message);

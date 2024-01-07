@@ -2,7 +2,6 @@ import { useSocket } from "@/components/providers/socket-provider";
 import { IMessage } from "@/models/message";
 import { IUser } from "@/models/user";
 import { useQueryClient } from "@tanstack/react-query";
-import { pages } from "next/dist/build/templates/app-page";
 import { useEffect } from "react";
 
 type ChatSocketProps = {

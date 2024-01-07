@@ -11,11 +11,7 @@ type Props = {
 export const update = async (req: NextRequest, { params: { id } }: Props) => {
   try {
     const body = await req.json() as IServer;
-
-    //
-    // Check JWT
-    //
-
+    
     // Check if server exist ..
     const server = await ServerModel.findById(id);
     if (!server) {

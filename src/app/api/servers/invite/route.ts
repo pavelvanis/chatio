@@ -6,8 +6,6 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.nextUrl);
 
-    console.log("[SERVER_INVITE]", searchParams);
-
     const user = searchParams.get("userId");
     const inviteCode = searchParams.get("inviteCode");
 
