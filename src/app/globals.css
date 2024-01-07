@@ -2,43 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  height: 100vh;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 body {
-  display: flex;
-  min-height: 100vh;
-  max-width: 2000px;
-  margin: 0 auto;
-}
-
-main {
-  flex-grow: 1;
-  background-color: rgb(248, 182, 182);
-  padding: 2rem;
-  padding-top: 0.75rem;
-}
-
-.bar {
-  background-color: gray;
-}
-
-@media (max-width: 640px) {
-  .bar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    padding: 1rem;
-  }
+  max-height: 100vh;
+  margin: 0;
 }

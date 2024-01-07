@@ -1,26 +1,39 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Averia_Libre, Inter, Josefin_Sans } from "next/font/google";
 import "./globals.css";
-import { getServerSession } from "next-auth";
-import authOptions from "@/lib/authoptions";
-import { redirect } from "next/navigation";
+import { SocketProvider } from "@/components/providers/socket-provider";
+import SessionProvider from "@/components/providers/session-provider";
+import { ServerProvider } from "@/components/providers/server-provider";
+import QueryProvider from "@/components/providers/query-provider";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const font = Averia_Libre({
+  weight: ["300", "400", "700"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "ChatIo",
   description: "Realtime chat app",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <SocketProvider>
+        <SessionProvider>
+          <ServerProvider>
+            <QueryProvider>
+              <body className={inter.className}>{children}</body>
+            </QueryProvider>
+          </ServerProvider>
+        </SessionProvider>
+      </SocketProvider>
     </html>
   );
 }

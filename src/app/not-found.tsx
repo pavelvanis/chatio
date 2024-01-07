@@ -1,11 +1,14 @@
-import React from 'react'
+import Link from "next/link";
 
-type Props = {}
-
-const NotFound = (props: Props) => {
+const NotFound = () => {
   return (
-    <div>NotFound</div>
-  )
-}
+    <main className="h-full flex justify-center items-center">
+      <div className="text-center">
+        <h1 className="mb-2">Not Found</h1>
+        <Link className=" text-sm" href="/">Go home</Link>
+      </div>
+    </main>
+  );
+};
 
-export default NotFound
+export default NotFound;
