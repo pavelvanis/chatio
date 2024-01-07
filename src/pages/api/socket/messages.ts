@@ -55,13 +55,17 @@ export default async function handler(
         .json({ error: "User is not member of this server" });
     }
 
-    const message = await MessageModel.create({
+    const createdMessage = await MessageModel.create({
       content: content,
       userId: user.id,
       serverId: serverId,
     });
 
-    const chatKey = `chat:${serverId}/messages`;
+    const message = await MessageModel.findById(createdMessage._id).populate(
+      "userId"
+    );
+
+    const chatKey = `chat:${serverId}:messages`;
 
     res.socket.server.io.emit(chatKey, message);
 
