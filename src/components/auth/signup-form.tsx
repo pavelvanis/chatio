@@ -110,7 +110,7 @@ const SignupForm = () => {
             *<span className="ms-1">{error}</span>
           </p>
         )}
-        <Button type="submit" className="w-full text-white bg-slate-800">
+        <Button type="submit" className="w-full text-white bg-slate-800 py-1">
           Signup
         </Button>
         <div className=" text-center">
