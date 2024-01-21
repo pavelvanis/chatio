@@ -1,48 +1,56 @@
-import MessageModel, { IMessage } from "@/models/message";
-import { timeStamp } from "console";
+import MessageModel from "@/models/message";
+import ServerModel from "@/models/server";
+import UserModel from "@/models/user";
+import { isValidObjectId } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
-const MESSAGES_BATCH_SIZE = 15;
-
-export async function GET(req: NextRequest) {
+export async function GET(re: NextRequest) {
   try {
-    const { searchParams } = new URL(req.nextUrl);
+    const { searchParams } = new URL(re.nextUrl);
 
-    const cursor = searchParams.get("cursor");
-    const serverId = searchParams.get("serverId");
+    const user = searchParams.get("user");
+    const server = searchParams.get("server");
+    const contains = searchParams.get("contains");
 
-    if (!serverId) {
-      return new NextResponse("Server ID is missing!", { status: 400 });
+    // Check user
+    if(user && !isValidObjectId(user)) {
+        return new NextResponse("User is not valid ID!", { status: 404 });
+    }
+    if(user && !(await UserModel.exists({ _id: user }))) {
+        return new NextResponse("User not found!", { status: 404 });
     }
 
-    let messages: any[] = [];
-
-    if (cursor) {
-      messages = await MessageModel.find({
-        serverId: serverId,
-        _id: { $lt: cursor },
-      })
-        .limit(MESSAGES_BATCH_SIZE)
-        .sort({ timestamp: "desc" })
-        .populate({
-          path: "userId",
-        });
-    } else {
-      messages = await MessageModel.find({ serverId: serverId })
-        .limit(MESSAGES_BATCH_SIZE)
-        .sort({ timestamp: "desc" })
-        .populate("userId");
+    // Check server
+    if(server && !isValidObjectId(server)) {
+        return new NextResponse("Server is not valid ID!", { status: 404 });
+    }
+    if(server && !(await ServerModel.exists({ _id: server }))) {
+        return new NextResponse("Server not found!", { status: 404 });
     }
 
-    let nextCursor = null;
-
-    if (messages.length === MESSAGES_BATCH_SIZE) {
-      nextCursor = messages[MESSAGES_BATCH_SIZE - 1].id;
+    // Get messages by user
+    if (user && !server) {
+      const messages = await MessageModel.find({ userId: user });
+      return NextResponse.json({ items: messages });
     }
 
-    return NextResponse.json({ items: messages, nextCursor });
+    // Get messages by server
+    if (server && !user) {
+      const messages = await MessageModel.find({ serverId: server });
+      return NextResponse.json({ items: messages });
+    }
+
+    // Get messages containing text
+    if(contains) {
+        const messages = await MessageModel.find({ content: { $regex: contains, $options: 'i' } });
+        return NextResponse.json({ items: messages });
+    }
+
+    // Get all messages
+    const messages = await MessageModel.find({});
+    return NextResponse.json({ items: messages });
   } catch (error) {
-    console.error("[MESSAGES_GET]", error);
+    console.log("[MESSAGES_GET]", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

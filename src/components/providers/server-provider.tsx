@@ -24,6 +24,7 @@ export const ServerProvider = ({ children }: { children: React.ReactNode }) => {
 
   const session = useSession();
   const token = session.data?.user.token;
+  // console.log(token);
 
   useEffect(() => {
     if (params?.serverId && token) {
