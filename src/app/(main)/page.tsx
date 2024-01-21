@@ -1,3 +1,4 @@
+import { ModalType, useModal } from "@/hooks/use-modal";
 import React from "react";
 
 const MainPage = () => {

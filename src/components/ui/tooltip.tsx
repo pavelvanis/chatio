@@ -15,7 +15,7 @@ const TooltipTrigger = React.forwardRef<
   <TooltipPrimitive.Trigger
     ref={ref}
     className={twMerge(
-      " border-none bg-transparent flex items-center justify-center",
+      " border-none flex items-center justify-center",
       className
     )}
     {...props}

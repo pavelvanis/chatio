@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Averia_Libre, Inter, Josefin_Sans } from "next/font/google";
-import "./globals.css";
+import { Averia_Libre, Inter } from "next/font/google";
+
 import { SocketProvider } from "@/components/providers/socket-provider";
 import SessionProvider from "@/components/providers/session-provider";
 import { ServerProvider } from "@/components/providers/server-provider";
 import QueryProvider from "@/components/providers/query-provider";
+import { ModalProvider } from "@/components/providers/modal-provider";
+
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +31,7 @@ export default function RootLayout({
       <SocketProvider>
         <SessionProvider>
           <ServerProvider>
+            <ModalProvider />
             <QueryProvider>
               <body className={inter.className}>{children}</body>
             </QueryProvider>

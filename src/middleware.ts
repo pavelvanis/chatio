@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { JwtError, verifyJwt } from "./lib/jwt";
+import { verifyJwt } from "./lib/jwt";
 import { InvalidTokenError } from "jwt-decode";
 
 // This function can be marked `async` if using `await` inside
@@ -33,6 +33,7 @@ export const config = {
     "/api/servers/:path*",
     "/api/member-ships/:path*",
     "/api/messages/:path*",
+    "/api/chat/:path*",
     "/api/users/:path*",
   ],
 };

@@ -2,7 +2,8 @@
 import { IServer } from "@/models/server";
 import { IUser } from "@/models/user";
 import { useSession } from "next-auth/react";
-import { notFound, useParams } from "next/navigation";
+import { notFound, useParams, usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type ServerContextType = { server: IServer | null; members: IUser[] | null };
@@ -21,12 +22,17 @@ export const ServerProvider = ({ children }: { children: React.ReactNode }) => {
   const [members, setMembers] = useState<IUser[] | null>(null);
 
   const params = useParams<{ serverId: string }>();
+  const pathname = usePathname();
 
   const session = useSession();
   const token = session.data?.user.token;
   // console.log(token);
 
   useEffect(() => {
+    if (pathname === "/") {
+      return setServer(null);
+    }
+
     if (params?.serverId && token) {
       fetch(`/api/servers/${params.serverId}`, {
         headers: {
@@ -56,7 +62,6 @@ export const ServerProvider = ({ children }: { children: React.ReactNode }) => {
           console.error(error);
         });
     }
-
   }, [params, server, token]);
 
   return (

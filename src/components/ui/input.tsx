@@ -3,13 +3,9 @@ import { twMerge } from "tailwind-merge";
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
-const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
-  { className, ...props },
-  ref
-) => {
+const Input: React.FC<InputProps> = ({ className, ...props }) => {
   return (
     <input
-      ref={ref}
       className={twMerge(
         "w-full h-7 rounded-lg ps-4 pe-3 text-base border ",
         className
@@ -19,4 +15,4 @@ const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
   );
 };
 
-export default React.forwardRef(Input);
+export default Input;

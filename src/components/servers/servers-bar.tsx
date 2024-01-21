@@ -9,7 +9,6 @@ import { twMerge } from "tailwind-merge";
 
 import ServerItem from "./server-item";
 import AddServer from "./server-add";
-import CreateServer from "./server-create";
 
 const getServers = async () => {
   const session = await getServerSession(authOptions);
@@ -37,7 +36,6 @@ const ServersBar: React.FC<Props> = async ({ className }) => {
       )}
     >
       <AddServer />
-      <CreateServer />
       {servers.map((server, index) => (
         <ServerItem
           key={index}

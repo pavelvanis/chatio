@@ -14,6 +14,7 @@ const ServerActions = () => {
   const [isCoppied, setIsCoppied] = useState(false);
   const { server } = useServer();
   const { data: user } = useSession();
+  const token = user?.user.token;
 
   const inviteCodeRef = useRef(null);
 
@@ -30,12 +31,15 @@ const ServerActions = () => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => {
+          router.push("/");
+          router.refresh();
+        });
 
-      router.push("/");
     } catch (error) {
       console.error(error);
     }
