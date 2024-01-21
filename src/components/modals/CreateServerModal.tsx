@@ -21,18 +21,6 @@ type CreateServerProps = {
   isPrivate: boolean | null;
 };
 
-const CreateServerSchema = z.object({
-  name: z
-    .string()
-    .min(1, { message: "Server name is required" })
-    .max(100, { message: "Server name is too long" }),
-  description: z
-    .string()
-    .min(1, { message: "Description is required" })
-    .max(300, { message: "Description is too long" }),
-  isPrivate: z.boolean(),
-});
-
 type AddServerProps = {
   inviteCode: string;
 };
@@ -41,7 +29,8 @@ export const CreateServerModal = () => {
   const { isOpen, type, onClose } = useModal();
   const isModalOpen = isOpen && type === "createServer";
 
-  const [error, setError] = useState<any | null>(null);
+  const [createError, setCreateError] = useState<any | null>(null);
+  const [addError, setAddError] = useState<any | null>(null);
   const formRefCreate = useRef<HTMLFormElement | null>(null);
   const formRefAdd = useRef<HTMLFormElement | null>(null);
 
@@ -78,24 +67,45 @@ export const CreateServerModal = () => {
         .then((data) => {
           console.log(data);
           if (data.error) {
-            setError(data.error);
+            setCreateError(data.error);
           } else {
-            setError(null);
+            setCreateError(null);
             formRefCreate.current?.reset();
             router.push(`/servers/${data.id}`);
-            router.refresh()
-            onClose()
+            router.refresh();
+            onClose();
           }
         });
     } catch (error) {
-      setError(error);
+      setCreateError(error);
       console.log(error);
     }
   };
 
-  const AddServer = (e: FormEvent) => {
+  const AddServer = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(addServerProps.current);
+    const response = await fetch("/api/servers/invite", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        user: userId,
+        inviteCode: addServerProps.current.inviteCode,
+      }),
+    });
+
+    if (!response.ok) {
+      setAddError(response.statusText);
+    } else {
+      const data = await response.json();
+
+      setAddError(null);
+      formRefCreate.current?.reset();
+      router.push(`/servers/${data.id}`);
+      router.refresh();
+      onClose();
+    }
   };
 
   const handleClose = () => {
@@ -150,7 +160,7 @@ export const CreateServerModal = () => {
                     }
                   />
                 </fieldset>
-                {error && <p>{error}</p>}
+                {createError && <p className="text-red-700">{createError}</p>}
               </div>
               <DialogFooter className="bg-gray-100 px-6 py-4">
                 <button className=" bg-gray-300 px-2 py-1 rounded-lg transition-all duration-200 hover:bg-gray-200 font-light">
@@ -167,9 +177,15 @@ export const CreateServerModal = () => {
                     type="text"
                     required
                     placeholder="Invite code"
+                    minLength={5}
+                    maxLength={10}
                     className="w-full border p-2 px-4 rounded-lg"
+                    onChange={(e) =>
+                      (addServerProps.current.inviteCode = e.target.value)
+                    }
                   />
                 </fieldset>
+                {addError && <p className="text-red-700">{addError}</p>}
               </div>
               <DialogFooter className="bg-gray-100 px-6 py-4">
                 <button className=" bg-gray-300 px-2 py-1 rounded-lg transition-all duration-200 hover:bg-gray-200 font-light">

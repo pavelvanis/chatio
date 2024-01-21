@@ -2,12 +2,14 @@ import ServerModel from "@/models/server";
 import UserModel from "@/models/user";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.nextUrl);
+    // const { searchParams } = new URL(req.nextUrl);
 
-    const user = searchParams.get("userId");
-    const inviteCode = searchParams.get("inviteCode");
+    // const user = searchParams.get("userId");
+    // const inviteCode = searchParams.get("inviteCode");
+
+    const { user, inviteCode } = await req.json();
 
     if (!user) {
       return NextResponse.json({ error: "User Id missing!" }, { status: 400 });
@@ -30,10 +32,7 @@ export async function GET(req: NextRequest) {
 
     const server = await ServerModel.findOne({ inviteCode: inviteCode });
     if (!server) {
-      return NextResponse.json(
-        { error: "Server does not exist!" },
-        { status: 400 }
-      );
+      return new NextResponse("Server does not exist!", { status: 400, statusText: "Server does not exist!" });
     }
 
     await server.addMember(user);
